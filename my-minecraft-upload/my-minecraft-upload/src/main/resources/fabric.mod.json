@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "myminecraft",
+  "version": "${version}",
+  "name": "My Minecraft",
+  "description": "Furniture, animals, vehicles, medieval villages, walled towns, haunted outposts, illagers and an Iceologer ice castle - all in one mod.",
+  "authors": ["You"],
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.myminecraft.MyMinecraft"],
+    "client": ["com.myminecraft.client.MyMinecraftClient"]
+  },
+  "mixins": ["myminecraft.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
