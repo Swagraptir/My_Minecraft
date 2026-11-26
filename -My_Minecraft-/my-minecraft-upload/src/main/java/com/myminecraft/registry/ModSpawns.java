@@ -17,7 +17,6 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
@@ -66,7 +65,7 @@ public final class ModSpawns {
                     place(type, SpawnPlacementTypes.NO_RESTRICTIONS, (t, lv, reason, pos, rnd) -> true);
                 } else {
                     place(type, SpawnPlacementTypes.ON_GROUND, (t, lv, reason, pos, rnd) -> lv.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)
-                            && Animal.isBrightEnoughToSpawn(lv, pos));
+                            && (lv.getBrightness(LightLayer.SKY, pos) > 8 || lv.getBrightness(LightLayer.BLOCK, pos) > 8));
                 }
             }
         }

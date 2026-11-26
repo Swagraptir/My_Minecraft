@@ -23,11 +23,24 @@ loom {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+// Keep generated Java, data, and textures in sync with the Python source-of-truth on every build.
+tasks.register('generateModAssets', Exec) {
+	workingDir projectDir
+	commandLine 'python3', 'tools/generate.py'
+}
+
+tasks.register('patchGeneratedSources', Exec) {
+	dependsOn tasks.named('generateModAssets')
+	workingDir projectDir
+	commandLine 'python3', 'tools/patch_generated.py'
 }
 
 processResources {
+	dependsOn tasks.named('patchGeneratedSources')
 	inputs.property "version", project.version
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
@@ -35,6 +48,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
+	dependsOn tasks.named('patchGeneratedSources')
 	it.options.release = 25
 	it.options.encoding = "UTF-8"
 }
